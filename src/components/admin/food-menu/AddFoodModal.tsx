@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ChangeEvent, useState } from "react";
 import { ImageUploader } from "./ImageUploader";
+import { toast } from "sonner";
 
 type AddFoodModalProps = {
   categoryName: string;
@@ -39,6 +40,8 @@ export const AddFoodModal = ({
     ingredients: "",
     category: categoryId,
   });
+  //  toast.success(
+  //       `Category ${category.foodCategory.categoryName} created successfully`)
 
   const handleInputChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -51,7 +54,27 @@ export const AddFoodModal = ({
     }));
   };
 
-  const handleCreateFood = async () => {
+const handleCreateFood = async () => {
+  try {
+    const formData = new FormData();
+    formData.append("foodName", foodInfo.foodName);
+    formData.append("price", foodInfo.price);
+    formData.append("ingredients", foodInfo.ingredients);
+    formData.append("category", foodInfo.category);
+    if (uploadedImage) {
+      formData.append("image", uploadedImage);
+    }
+
+    const response = await fetch("http://localhost:3002/Food", {
+      method: "POST",
+      body: formData,
+    });
+
+    // if (!response.ok) throw new Error("Failed to create food");
+
+    const data = await response.json();         
+    
+    console.log("Амжилттай үүслээ:", data);
     setFoodInfo({
       foodName: "",
       price: "",
@@ -59,12 +82,16 @@ export const AddFoodModal = ({
       ingredients: "",
       category: categoryId,
     });
-  };
-
-  const onFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files) return;
-    setUploadedImage(event.target.files[0]);
-  };
+    setUploadedImage(undefined);
+  } catch (error) {
+    console.error("Хоол үүсгэхэд алдаа гарлаа:", error);
+  }
+};
+const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  if (e.target.files && e.target.files.length > 0) {
+    setUploadedImage(e.target.files[0]);
+  }
+};
 
   return (
     <Dialog>

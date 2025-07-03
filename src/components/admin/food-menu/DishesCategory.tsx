@@ -1,24 +1,29 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { AddCategoryModal } from "./AddCategoryModal";
 import { DishesCategorySkeleton } from "./DishesCategorySkeleton";
+import { FoodsWithCategory } from "@/type";
 
-export type CategoryWithCount = {
-  categoryName: string;
-  count: number;
-};
-const categories = [
-  {
-    categoryName: "categoryName1",
-    count: 2,
-  },
-];
 export const DishesCategory = () => {
-  if (!categories) return null;
+  const [foodsWithCategory, setFoodsWithCategory] = useState<
+    FoodsWithCategory[]
+  >([]);
 
-  if (!categories.length) return <DishesCategorySkeleton />;
+  useEffect(() => {
+    const getFoods = async () => {
+      const responce = await fetch(
+        "http://localhost:3002/Food"
+      );
+      const data = await responce.json();
+      setFoodsWithCategory(data.foodWithCategories);
+    };
+    getFoods();
+  }, []);
+  if (!foodsWithCategory) return null;
+  if (!foodsWithCategory.length) return <DishesCategorySkeleton />;
 
-  const allDishesCount = categories.reduce(
+  const allDishesCount = foodsWithCategory.reduce(
     (acc, category) => acc + category.count,
     0
   );
@@ -33,7 +38,7 @@ export const DishesCategory = () => {
             {allDishesCount}
           </p>
         </div>
-        {categories?.map((category, index) => (
+        {foodsWithCategory?.map((category, index) => (
           <div key={index} className="flex gap-2 px-4 py-2 border rounded-full">
             <p className="text-sm font-medium">{category?.categoryName}</p>
             <p className="text-xs bg-black text-white rounded-full px-[10px] py-[2px] flex items-center font-semibold leading-4x">

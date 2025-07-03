@@ -7,29 +7,12 @@ import { MouseEventHandler, useState } from "react";
 import { Button } from "../ui/button";
 import { AddToCartAlert } from "./AddToCartAlert";
 import { FoodDetailModal } from "./FoodDetailModal";
+import { Food } from "@/type";
 
-type FoodCardProps = {
-  foodName: string;
-  price: number;
-  ingredients: string;
-  image: string;
-  _id: string;
-};
+type FoodCardProps =Food
 
-export const FoodCard = ({
-  foodName,
-
-  ingredients,
-  image,
-}: FoodCardProps) => {
-  const food = {
-    _id: "1",
-    foodName: "foodName",
-    price: 1200,
-    image: "",
-    ingredients: "ingredients ingredients",
-  };
-
+export const FoodCard = ( props:FoodCardProps) => {
+  const {image, price, foodName,ingredients}=props
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
 
@@ -63,7 +46,7 @@ export const FoodCard = ({
           <div className="w-full">
             <div className="flex justify-between">
               <p className="text-2xl font-semibold text-red-500">{foodName}</p>
-              <p className="text-lg font-semibold text-[#09090B]">12 ₮</p>
+              <p className="text-lg font-semibold text-[#09090B]">{price}</p>
             </div>
 
             <div className="mt-2 text-sm text-[#09090B] font-normal">
@@ -73,7 +56,7 @@ export const FoodCard = ({
         </Card>
       </div>
       <FoodDetailModal
-        food={food}
+        food={props}
         isModalOpen={isModalOpen}
         onToggleModal={onToggleModal}
       />

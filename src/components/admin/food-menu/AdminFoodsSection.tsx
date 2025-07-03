@@ -1,39 +1,47 @@
 "use client";
 
-import { foodWithCategories } from "@/app/(main)/_components/food-with-category/FoodsWithCategories";
+import { FoodsWithCategory } from "@/type";
 import { AddFoodModal } from "./AddFoodModal";
 import { AdminFoodCard } from "./AdminFoodCard";
 import { AdminFoodSkeleton } from "./AdminFoodSkeleton";
-
-export type FoodCategory = {
-  _id: string;
-  categoryName: string;
-  count: number;
-  foods: {
-    _id: string;
-    foodName: string;
-    price: number;
-    image: string;
-    ingredients: string;
-    createdAt?: string;
-    updatedAt?: string;
-  }[];
-};
+import { useEffect, useState } from "react";
 
 export const AdminFoodsSection = () => {
-  if (!foodWithCategories) return null;
+  const [foodsWithCategory, setFoodsWithCategory] = useState<
+    FoodsWithCategory[]
+  >([]);
+  const [loading, setLoading] = useState(true);
 
-  if (!foodWithCategories.length) return <AdminFoodSkeleton />;
+  useEffect(() => {
+    const getFoods = async () => {
+      const response = await fetch(
+        "http://localhost:3002/Food"
+      );
+      const data = await response.json();
+
+      setFoodsWithCategory(data.foodWithCategories);
+    };
+
+    getFoods();
+    setLoading(false);
+  }, []);
+
+  if (loading) return <AdminFoodSkeleton />;
+
+  if (!loading && (!foodsWithCategory || foodsWithCategory.length === 0)) {
+    return <p>no foods</p>;
+  }
 
   return (
     <div className="flex flex-col gap-6">
-      {foodWithCategories.map((category, index) => (
+      {foodsWithCategory.map((category, index) => (
         <div
           key={index}
           className="flex flex-col gap-4 p-6 bg-background rounded-xl"
         >
           <div className="flex items-center gap-2 text-xl font-semibold">
             <p>{category.categoryName}</p>
+
             <p className="flex items-center">{category.count}</p>
           </div>
 

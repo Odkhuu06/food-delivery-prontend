@@ -1,30 +1,23 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { FoodsWithCategories } from "./FoodsWithCategories";
-
-const categories = [
-  {
-    categoryName: "categoryName1",
-    _id: 1,
-  },
-  {
-    categoryName: "categoryName2",
-    _id: 2,
-  },
-  {
-    categoryName: "categoryName3",
-    _id: 3,
-  },
-
-  {
-    categoryName: "categoryName4",
-    _id: 4,
-  },
-];
+import { Category } from "@/type";
 
 export const FoodCategories = () => {
-  if (!categories.length)
-    return <p className="text-white">No categories found</p>;
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const responce = await fetch("http://localhost:3002/createdCategory");
+      const data = await responce.json();
+      setCategories(data.category);
+    };
+    getCategories();
+  }, []);
+if (!categories || categories.length === 0)
+  return <p className="text-white">No categories found</p>;
+
 
   return (
     <div>

@@ -57,6 +57,7 @@ export const AdminFoodsSection = () => {
                   price={food.price}
                   ingredients={food.ingredients}
                   foodName={food.foodName}
+                  
                 />
               </div>
             ))}

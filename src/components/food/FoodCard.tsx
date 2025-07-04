@@ -8,6 +8,7 @@ import { Button } from "../ui/button";
 import { AddToCartAlert } from "./AddToCartAlert";
 import { FoodDetailModal } from "./FoodDetailModal";
 import { Food } from "@/type";
+import { log } from "console";
 
 type FoodCardProps =Food
 
@@ -28,13 +29,15 @@ export const FoodCard = ( props:FoodCardProps) => {
   const handleAlertRemove = () => {
     setShowAlert(false);
   };
+  console.log(image);
+  
 
   return (
     <div className="w-full">
       <div onClick={onToggleModal}>
         <Card className="flex flex-col gap-5 p-4 bg-white border-none shadow-none cursor-pointer w-99 h-86 rounded-3xl">
           <div className="relative flex items-end justify-end overflow-hidden h-52 rounded-3xl">
-            {/* <Image src={image} alt={foodName} objectFit="cover" layout="fill" /> */}
+            <Image src={image} alt={foodName} objectFit="cover" layout="fill" />
             <Button
               className="absolute bg-white rounded-full w-11 h-11 bottom-5 right-5"
               onClick={handleAddToCart}

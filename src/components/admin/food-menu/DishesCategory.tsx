@@ -13,7 +13,7 @@ export const DishesCategory = () => {
   useEffect(() => {
     const getFoods = async () => {
       const responce = await fetch(
-        "http://localhost:3002/Food"
+        "http://localhost:3002/food"
       );
       const data = await responce.json();
       setFoodsWithCategory(data.foodWithCategories);

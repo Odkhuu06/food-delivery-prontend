@@ -12,7 +12,7 @@ export const FoodCategories = () => {
       const responce = await fetch("http://localhost:3002/createdCategory/");
       const data = await responce.json();
       setCategories(data.categories);
-      console.log(data);
+      console.log(data.categories);
       
     };
     getCategories();

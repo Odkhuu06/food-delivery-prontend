@@ -36,12 +36,10 @@ export const AddFoodModal = ({
   const [foodInfo, setFoodInfo] = useState<FoodInfo>({
     foodName: "",
     price: "",
-    image: "",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTc9APxkj0xClmrU3PpMZglHQkx446nQPG6lA&s",
     ingredients: "",
     category: categoryId,
   });
-  //  toast.success(
-  //       `Category ${category.foodCategory.categoryName} created successfully`)
 
   const handleInputChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -56,25 +54,22 @@ export const AddFoodModal = ({
 
 const handleCreateFood = async () => {
   try {
-    const formData = new FormData();
-    formData.append("foodName", foodInfo.foodName);
-    formData.append("price", foodInfo.price);
-    formData.append("ingredients", foodInfo.ingredients);
-    formData.append("category", foodInfo.category);
-    if (uploadedImage) {
-      formData.append("image", uploadedImage);
-    }
-
-    const response = await fetch("http://localhost:3002/Food", {
+   
+console.log(foodInfo)
+    const response = await fetch("http://localhost:3002/food", {
       method: "POST",
-      body: formData,
+      headers: {
+        'Content-Type': 'application/json',
+    },
+      body: JSON.stringify({...foodInfo}),
     });
+    
+       toast.success(
+        `Food ${foodInfo.foodName} created successfully`)
 
-    // if (!response.ok) throw new Error("Failed to create food");
+    if (!response.ok) throw new Error("Failed to create food");
 
     const data = await response.json();         
-    
-    console.log("Амжилттай үүслээ:", data);
     setFoodInfo({
       foodName: "",
       price: "",
@@ -84,7 +79,7 @@ const handleCreateFood = async () => {
     });
     setUploadedImage(undefined);
   } catch (error) {
-    console.error("Хоол үүсгэхэд алдаа гарлаа:", error);
+    console.error("error", error);
   }
 };
 const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -161,13 +156,17 @@ const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
 
           <ImageUploader onFileChange={onFileChange} imgFile={uploadedImage} />
         </div>
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button type="button" className="mt-4" onClick={handleCreateFood}>
-              Add Dish
-            </Button>
-          </DialogClose>
-        </DialogFooter>
+     <DialogFooter>
+  <DialogClose asChild>
+    <Button
+      type="button"
+      className="mt-4"
+      onClick={handleCreateFood}
+    >
+      Add Dish
+    </Button>
+  </DialogClose>
+</DialogFooter>
       </DialogContent>
     </Dialog>
   );

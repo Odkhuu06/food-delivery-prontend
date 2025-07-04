@@ -15,7 +15,7 @@ export const AdminFoodsSection = () => {
   useEffect(() => {
     const getFoods = async () => {
       const response = await fetch(
-        "http://localhost:3002/Food"
+        "http://localhost:3002/food"
       );
       const data = await response.json();
 

@@ -27,6 +27,8 @@ export const FoodDetailModal = ({
 }: FoodDetailModalProps) => {
   const [quantity, setQuantity] = useState<number>(1);
   const { foodName, image, ingredients, price } = food;
+  console.log(image);
+  
 
   const addQuantity = () => {
     setQuantity((prev) => prev + 1);

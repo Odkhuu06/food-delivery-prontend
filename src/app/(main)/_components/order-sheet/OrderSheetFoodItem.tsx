@@ -9,13 +9,15 @@ export const OrderSheetFoodItem = ({ food, quantity }) => {
     <>
       <div className="flex gap-3">
         <div className="w-[124px] h-[120px] relative rounded-lg overflow-hidden">
-          <Image
-            className="fill"
-            src={food?.image}
-            objectFit="cover"
-            layout="fill"
-            alt={food?.foodName}
-          />
+          {food?.image && (
+            <Image
+              className="fill"
+              src={food?.image}
+              objectFit="cover"
+              layout="fill"
+              alt={food?.foodName || "food image"}
+            />
+          )}
         </div>
 
         <div className="w-[300px] flex flex-col justify-between">

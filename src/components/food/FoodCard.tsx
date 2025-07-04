@@ -34,7 +34,7 @@ export const FoodCard = ( props:FoodCardProps) => {
       <div onClick={onToggleModal}>
         <Card className="flex flex-col gap-5 p-4 bg-white border-none shadow-none cursor-pointer w-99 h-86 rounded-3xl">
           <div className="relative flex items-end justify-end overflow-hidden h-52 rounded-3xl">
-            <Image src={image} alt={foodName} objectFit="cover" layout="fill" />
+            {/* <Image src={image} alt={foodName} objectFit="cover" layout="fill" /> */}
             <Button
               className="absolute bg-white rounded-full w-11 h-11 bottom-5 right-5"
               onClick={handleAddToCart}
